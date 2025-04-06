@@ -19,28 +19,17 @@ function DetailCard({ product }) {
 
   const handleCart = () => {
     const cartData = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cartData) {
-      const existingProduct = cartData.find((item) => item.id === product.id);
-      if (existingProduct) {
-        existingProduct.quantity += quantity;
-      } else {
-        cartData.push({ ...product, quantity });
-      }
-      localStorage.setItem("cart", JSON.stringify(cartData));
 
-      navigate("/cart");
+    const existingProduct = cartData.find((item) => item.id === product.id);
+    if (existingProduct) {
+      existingProduct.quantity += quantity;
     } else {
-      const cartData = {
-        ...product,
-
-        quantity: quantity,
-      };
-      localStorage.setItem("cart", JSON.stringify(cartData));
-
-      setCartLength(cartData.length);
-
-      navigate("/cart");
+      cartData.push({ ...product, quantity });
     }
+
+    localStorage.setItem("cart", JSON.stringify(cartData));
+    setCartLength(cartData.length);
+    navigate("/cart");
   };
 
   console.log(product);
@@ -51,7 +40,7 @@ function DetailCard({ product }) {
         <p className="text-gray-500 mb-4">{product.category}</p>
         <img
           src={product.image}
-          alt={product.name}
+          alt={product.title}
           className="w-full h-64 object-cover mb-4"
         />
         <p className="text-gray-700 mb-4">{product.description}</p>
@@ -68,16 +57,16 @@ function DetailCard({ product }) {
             </p>
           </div>
           <div className="flex accordion items-center mt-4 mb-4 gap-1">
-            <Button children="+" handleClick={handleIncrease} />
+            <Button handleClick={handleIncrease}>+</Button>
             <p className=" font-bold py-2 px-4 cursor-pointer bg-gray-300">
               {quantity}
             </p>
-            <Button children="-" handleClick={handleDecrease} />
+            <Button handleClick={handleDecrease}>-</Button>
           </div>
         </div>
 
         <div className="flex justify-center items-center mt-4 mb-4">
-          <Button children="Add to cart" handleClick={handleCart} />
+          <Button handleClick={handleCart}>Add to cart</Button>
         </div>
       </div>
     </div>

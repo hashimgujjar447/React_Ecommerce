@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import useCartDataFromLS from "../customHook/useCartDataFromLS";
-
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { CartContext } from "../context/cartContext";
@@ -20,14 +19,14 @@ function Cart() {
     } else {
       setCartData([]);
     }
-  }, []);
+  }, [Data, setCartLength]); // Dependency on Data to update cartData
 
   useEffect(() => {
     const totalPrice = cartData.reduce((acc, item) => {
       return acc + item.price * item.quantity;
     }, 0);
     setTotal(totalPrice);
-  }, [cartData]);
+  }, [cartData]); // Recalculating total when cartData changes
 
   const handleContinue = () => {
     setCheckout(false);
@@ -39,6 +38,20 @@ function Cart() {
 
   const handleShopping = () => {
     navigate("/");
+  };
+
+  const handleRemove = (item) => {
+    const confirmation = window.confirm(
+      "Are you sure you want to remove this item?",
+    );
+    if (confirmation) {
+      const updatedCart = cartData.filter(
+        (cartItem) => cartItem.id !== item.id,
+      );
+      setCartData(updatedCart);
+      setCartLength(updatedCart.length);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
   };
 
   return (
@@ -75,17 +88,7 @@ function Cart() {
                     <td className="border border-gray-300 p-2 text-center">
                       <button
                         className="bg-red-500 text-white px-4 py-2 rounded hover:cursor-pointer"
-                        onClick={() => {
-                          const updatedCart = cartData.filter(
-                            (cartItem) => cartItem.id !== item.id,
-                          );
-                          setCartData(updatedCart);
-                          setCartLength(updatedCart.length);
-                          localStorage.setItem(
-                            "cart",
-                            JSON.stringify(updatedCart),
-                          );
-                        }}
+                        onClick={() => handleRemove(item)}
                       >
                         Remove
                       </button>
@@ -101,40 +104,40 @@ function Cart() {
           <div className="flex justify-center gap-3 mt-4">
             <Button children="Continue Shopping" handleClick={handleShopping} />
             <Button
-              children=" Checkout"
+              children="Checkout"
               bgColor="bg-green-500"
               handleClick={() => setCheckout(true)}
             />
           </div>
           {checkout && (
-            <div className="bg-white absolute top-1/2 left-1/2 -translate-x-1/2    shadow-lg rounded-lg p-5 mb-4 mt-4 max-w-md w-full">
+            <div className="bg-white absolute top-1/2 left-1/2 -translate-x-1/2 shadow-lg rounded-lg p-5 mb-4 mt-4 max-w-md w-full">
               <h1 className="text-2xl font-medium text-center mb-2">
                 Checkout Card
               </h1>
               <h2 className="text-xl text-center mb-2">
-                Thank you for shopping sir
+                Thank you for shopping!
               </h2>
               <p className="text-center text-lg font-semibold">
                 <b>Total Amount</b>: {total} $
               </p>
-              <div className="flex justify-center items-center mt-4 ">
+              <div className="flex justify-center items-center mt-4">
                 <Button
                   children="Continue Shopping"
                   handleClick={handleContinue}
-                  bgColor={"bg-green-500"}
+                  bgColor="bg-green-500"
                 />
               </div>
             </div>
           )}
         </div>
       ) : (
-        <div className="flex justify-center items-center flex-col  gap-4 mt-6">
+        <div className="flex justify-center items-center flex-col gap-4 mt-6">
           <h1 className="text-2xl font-bold text-center">Your Cart is Empty</h1>
           <p className="text-center">Please add some items to your cart.</p>
           <Button
             children="Continue Shopping"
             handleClick={handleShopping}
-            bgColor={"bg-green-500"}
+            bgColor="bg-green-500"
           />
         </div>
       )}

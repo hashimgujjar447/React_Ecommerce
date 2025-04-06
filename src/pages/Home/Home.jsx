@@ -9,26 +9,26 @@ function Home() {
   const [error, setError] = React.useState(null);
 
   useEffect(() => {
-    async function fetchAndLogData() {
+    const cached = JSON.parse(localStorage.getItem("Products"));
+    if (cached && cached.length > 0) {
+      setData(cached);
+      setLoading(false);
+      return;
+    }
+
+    async function fetchAndCache() {
       try {
-        const data = await fetchData();
-        console.log(data);
-        setData(data);
+        const result = await fetchData();
+        setData(result);
+        localStorage.setItem("Products", JSON.stringify(result));
+      } catch (err) {
+        setError(err);
+      } finally {
         setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setError(error);
       }
     }
 
-    fetchAndLogData();
-  }, []);
-
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("Products"));
-    if (data) {
-      setData(data);
-    }
+    fetchAndCache();
   }, []);
 
   useEffect(() => {

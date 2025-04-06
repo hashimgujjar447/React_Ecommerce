@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 function Card({ cardData }) {
   const navigate = useNavigate();
-  console.log(cardData);
+
   const handleClick = () => {
-    console.log("Card clicked:", cardData.title);
     navigate(`/details/${cardData.id}`);
   };
   return (
@@ -22,7 +21,7 @@ function Card({ cardData }) {
         <h1 className="text-xl font-medium text-gray-500">{cardData.title}</h1>
       </div>
       <div className="flex justify-center items-center mt-2 mb-2">
-        <Button children="See Details" handleClick={handleClick} />
+        <Button handleClick={handleClick}>See Details</Button>
       </div>
     </div>
   );
