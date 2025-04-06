@@ -1,5 +1,5 @@
 import React from "react";
-import Container from "../components/Container";
+
 import DetailCard from "../components/DetailCard";
 import { useParams } from "react-router-dom";
 import getDataFromLS from "../customHook/useLocalStorageData";
@@ -15,11 +15,9 @@ function Detail() {
   }
 
   return (
-    <Container>
-      <div className="w-full h-full mb-4">
-        <DetailCard product={product} />
-      </div>
-    </Container>
+    <div className="w-full h-full mb-4">
+      <DetailCard product={product} />
+    </div>
   );
 }
 

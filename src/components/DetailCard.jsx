@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "./Button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../context/cartContext";
 
 function DetailCard({ product }) {
+  const { setCartLength } = useContext(CartContext);
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
 
@@ -25,6 +27,7 @@ function DetailCard({ product }) {
         cartData.push({ ...product, quantity });
       }
       localStorage.setItem("cart", JSON.stringify(cartData));
+
       navigate("/cart");
     } else {
       const cartData = {
@@ -33,6 +36,9 @@ function DetailCard({ product }) {
         quantity: quantity,
       };
       localStorage.setItem("cart", JSON.stringify(cartData));
+
+      setCartLength(cartData.length);
+
       navigate("/cart");
     }
   };

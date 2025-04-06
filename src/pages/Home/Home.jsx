@@ -2,7 +2,6 @@ import React from "react";
 import Card from "../../components/Card";
 import { useEffect } from "react";
 import fetchData from "../../customHook/useDataFromApi.js";
-import Container from "../../components/Container.jsx";
 
 function Home() {
   const [data, setData] = React.useState([]);
@@ -55,11 +54,12 @@ function Home() {
   }
 
   return (
-    <Container>
-      <div className="flex flex-wrap justify-between items-center min-h-screen ">
+    <div className=" min-h-screen p-4">
+      <h1 className="text-3xl font-bold mb-3">Products available are :</h1>
+      <div className="flex flex-wrap justify-center md:justify-between items-center">
         {data && data.map((item) => <Card key={item.id} cardData={item} />)}
       </div>
-    </Container>
+    </div>
   );
 }
 
