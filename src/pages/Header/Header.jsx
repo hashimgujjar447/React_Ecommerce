@@ -19,7 +19,7 @@ function Header() {
       <div>
         <Link to={"/cart"} className="flex gap-2 items-center">
           <p className="text-center text-yellow-500 text-xl font-medium hover:cursor-pointer">
-            <i class="fa-solid fa-cart-shopping"></i> Cart {cartLength || 0}
+            <i className="fa-solid fa-cart-shopping"></i> Cart {cartLength || 0}
           </p>
         </Link>
       </div>

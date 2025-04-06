@@ -19,7 +19,7 @@ function Cart() {
     } else {
       setCartData([]);
     }
-  }, [Data, setCartLength]); // Dependency on Data to update cartData
+  }, []); // Dependency on Data to update cartData
 
   useEffect(() => {
     const totalPrice = cartData.reduce((acc, item) => {
